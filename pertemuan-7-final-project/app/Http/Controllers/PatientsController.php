@@ -34,7 +34,10 @@ class PatientsController extends Controller
 		$validator = Validator::make($request->all(), $rules);
 
 		if ($validator->fails()) {
-			return $this->responseFail('name, phone, address, status, in_date_at, out_date_at must be inserted');
+			return $this->responseFail(
+				'name, phone, address, status, in_date_at, out_date_at must be inserted',
+				204
+			);
 		}
 		
 		$patient = Patients::create($request->all());
