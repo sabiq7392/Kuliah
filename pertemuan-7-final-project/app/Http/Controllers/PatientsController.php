@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Patients;
+use Illuminate\Support\Facades\Validator;
 
 class PatientsController extends Controller
 {
@@ -17,17 +18,10 @@ class PatientsController extends Controller
 		}
 
 		return $this->responseSuccess($patients, 'Get all resource');
-		// $response = [
-		// 	'message' => 'Get All Resource',
-		// 	'data' => $patients,
-		// ];
-		// return response()->json($response, 200);
 	}
 
 	public function store(Request $request)
 	{
-		$patient = Patients::create($request->all());
-
 		$rules = [
 			'name' => 'required',
 			'phone' => 'required',
@@ -36,8 +30,15 @@ class PatientsController extends Controller
 			'in_date_at' => 'required',
 			'out_date_at' => 'required',
 		];
-		$request->validate($rules);
+
+		$validator = Validator::make($request->all(), $rules);
+
+		if ($validator->fails()) {
+			return $this->responseFail('name, phone, address, status, in_date_at, out_date_at must be inserted');
+		}
 		
+		$patient = Patients::create($request->all());
+
 		return $this->responseSuccess(
 			$patient, 
 			'Resource is added successfully', 
