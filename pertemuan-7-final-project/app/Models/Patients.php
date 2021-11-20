@@ -15,7 +15,7 @@ class Patients extends Model
 		'name', 
 		'phone', 
 		'address', 
-		'status_id',
+		'statuses_id',
 		'in_date_at',
 		'out_date_at',
 	];
@@ -38,7 +38,7 @@ class Patients extends Model
 	{
 		// mencari data berdasarkan status
 		return $this->joinData()
-								->where('status_id', $id)
+								->where('statuses_id', $id)
 								->get();
 	}
 
@@ -50,32 +50,11 @@ class Patients extends Model
 								->get();
 	}
 
-	public function responseFail($message = 'Resource not found', $statusCode = 404) 
-	{
-		// response ketika gagal
-		$response = [
-			'message' => $message,
-		];
-
-		return response()->json($response, $statusCode);
-	}
-
-	public function responseSuccess($data, $message, $statusCode = 200)
-	{
-		// response ketika success
-		$response = [
-			'message' => $message,
-			'data' => $data,
-		];
-
-		return response()->json($response, $statusCode);
-	}
-
 	private function joinData()
 	{
 		// menggabungkan table patients dan status
 		return DB::table('patients')
-							->select('patients.id', 'patients.name', 'phone', 'address', 'status.name as status', 'in_date_at', 'out_date_at') 
-							->join('status', 'status.id', '=', 'patients.status_id');
+							->select('patients.id', 'patients.name', 'phone', 'address', 'statuses.name as statuses', 'in_date_at', 'out_date_at') 
+							->join('statuses', 'statuses.id', '=', 'patients.statuses_id');
 	}
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PatientsController;
+use App\Http\Controllers\StatusesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::get('/patients', [PatientsController::class, 'index']);
 Route::get('/patients/{id}', [PatientsController::class, 'show']);
 Route::post('/patients', [PatientsController::class, 'store']);
@@ -28,3 +30,6 @@ Route::get('/patients/search/{name}', [PatientsController::class, 'search']);
 Route::get('/patients/status/positive', [PatientsController::class, 'positive']);
 Route::get('/patients/status/recovered', [PatientsController::class, 'recovered']);
 Route::get('/patients/status/dead', [PatientsController::class, 'dead']);
+
+Route::get('/status', [StatusesController::class, 'autoFill']);
+

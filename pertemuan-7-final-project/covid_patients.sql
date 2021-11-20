@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 18 Nov 2021 pada 00.39
+-- Waktu pembuatan: 20 Nov 2021 pada 13.37
 -- Versi server: 10.4.21-MariaDB
 -- Versi PHP: 7.3.31
 
@@ -58,8 +58,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (2, '2014_10_12_100000_create_password_resets_table', 1),
 (3, '2019_08_19_000000_create_failed_jobs_table', 1),
 (4, '2019_12_14_000001_create_personal_access_tokens_table', 1),
-(5, '2021_11_16_200224_status', 1),
-(6, '2021_11_16_200351_patients', 1);
+(5, '2021_11_20_113747_create_statuses_table', 1),
+(6, '2021_11_20_113835_patients', 1);
 
 -- --------------------------------------------------------
 
@@ -84,7 +84,7 @@ CREATE TABLE `patients` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status_id` bigint(20) UNSIGNED NOT NULL,
+  `statuses_id` bigint(20) UNSIGNED NOT NULL,
   `in_date_at` date NOT NULL,
   `out_date_at` date DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -95,9 +95,9 @@ CREATE TABLE `patients` (
 -- Dumping data untuk tabel `patients`
 --
 
-INSERT INTO `patients` (`id`, `name`, `phone`, `address`, `status_id`, `in_date_at`, `out_date_at`, `created_at`, `updated_at`) VALUES
-(1, 'Sabiq', '0856', 'Depok', 2, '2021-11-01', '2021-11-02', '2021-11-17 15:50:01', '2021-11-17 15:51:14'),
-(2, 'Dea R', '0856', 'Cariu', 3, '2021-11-01', '2021-11-02', '2021-11-17 15:51:56', '2021-11-17 16:13:20');
+INSERT INTO `patients` (`id`, `name`, `phone`, `address`, `statuses_id`, `in_date_at`, `out_date_at`, `created_at`, `updated_at`) VALUES
+(1, 'Sabiq Muhammad', '0857', 'citayam', 1, '2021-11-02', '2021-11-02', '2021-11-20 05:26:38', '2021-11-20 05:30:51'),
+(2, 'Dea Rhamanti', '0857', 'Cariu', 2, '2021-11-02', '2021-11-02', '2021-11-20 05:26:43', '2021-11-20 05:34:12');
 
 -- --------------------------------------------------------
 
@@ -120,22 +120,24 @@ CREATE TABLE `personal_access_tokens` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `status`
+-- Struktur dari tabel `statuses`
 --
 
-CREATE TABLE `status` (
+CREATE TABLE `statuses` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data untuk tabel `status`
+-- Dumping data untuk tabel `statuses`
 --
 
-INSERT INTO `status` (`id`, `name`) VALUES
-(1, 'Positive'),
-(2, 'Recovered'),
-(3, 'Dead');
+INSERT INTO `statuses` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'Positive', '2021-11-20 05:26:13', '2021-11-20 05:26:13'),
+(2, 'Recovered', '2021-11-20 05:26:13', '2021-11-20 05:26:13'),
+(3, 'Dead', '2021-11-20 05:26:13', '2021-11-20 05:26:13');
 
 -- --------------------------------------------------------
 
@@ -192,9 +194,9 @@ ALTER TABLE `personal_access_tokens`
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
--- Indeks untuk tabel `status`
+-- Indeks untuk tabel `statuses`
 --
-ALTER TABLE `status`
+ALTER TABLE `statuses`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -224,7 +226,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT untuk tabel `patients`
 --
 ALTER TABLE `patients`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `personal_access_tokens`
@@ -233,9 +235,9 @@ ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `status`
+-- AUTO_INCREMENT untuk tabel `statuses`
 --
-ALTER TABLE `status`
+ALTER TABLE `statuses`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
