@@ -36,13 +36,14 @@ class AuthController extends Controller
 			'password' => $request->password,
 		];
 
-		$user = User::where('email', $input['email'])->first();
-
 		// $checkEmail = $input['email'] == $user->email;
 		// $checkPassword = Hash::check($input['password'], $user->password);
 
 		if (Auth::attempt($input)) {
-			$token = $user->createToken('auth_token');
+			// $user = User::where('email', $input['email'])->first();
+
+			// $token = $user->createToken('auth_token');
+			$token = Auth::user()->createToken('auth_token');
 
 			return $this->responseSuccess(
 				['token' => $token->plainTextToken], 
