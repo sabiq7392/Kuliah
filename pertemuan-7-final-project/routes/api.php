@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PatientsController;
 use App\Http\Controllers\StatusesController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,20 +16,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['auth:sanctum'])->group(function() {
+	Route::get('/patients', [PatientsController::class, 'index'])->middleware('auth:sanctum');
+	Route::get('/patients/{id}', [PatientsController::class, 'show']);
+	Route::post('/patients', [PatientsController::class, 'store']);
+	Route::put('/patients/{id}', [PatientsController::class, 'update']);
+	Route::delete('/patients/{id}', [PatientsController::class, 'destroy']);
+	
+	Route::get('/patients/search/{name}', [PatientsController::class, 'search']);
+	Route::get('/patients/status/positive', [PatientsController::class, 'positive']);
+	Route::get('/patients/status/recovered', [PatientsController::class, 'recovered']);
+	Route::get('/patients/status/dead', [PatientsController::class, 'dead']);
+
+	Route::get('/status', [StatusesController::class, 'autoFill']);
 });
 
+// Endpoint Register dan Login
+Route::post ('/register', [AuthController::class, 'register']);
+Route::post ('/login', [AuthController::class, 'login']);
 
-Route::get('/patients', [PatientsController::class, 'index']);
-Route::get('/patients/{id}', [PatientsController::class, 'show']);
-Route::post('/patients', [PatientsController::class, 'store']);
-Route::put('/patients/{id}', [PatientsController::class, 'update']);
-Route::delete('/patients/{id}', [PatientsController::class, 'destroy']);
-Route::get('/patients/search/{name}', [PatientsController::class, 'search']);
-Route::get('/patients/status/positive', [PatientsController::class, 'positive']);
-Route::get('/patients/status/recovered', [PatientsController::class, 'recovered']);
-Route::get('/patients/status/dead', [PatientsController::class, 'dead']);
 
-Route::get('/status', [StatusesController::class, 'autoFill']);
 
