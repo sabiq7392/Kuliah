@@ -48,14 +48,13 @@ class PatientsController extends Controller
 				'name' => 'required',
 				'phone' => 'required|numeric',
 				'address' => 'required',
-				'statuses_id' => 'required',
+				'statuses_id' => 'required|numeric',
 				'in_date_at' => 'required',
 				'out_date_at' => 'required',
 			];
 
 			// kondisi ketika status pasien bukan positif maka akan mengambil semua input
 			if ($request->statuses_id != $positive) {
-
 				return $this->storePatientByRules($request->all(), $rules);
 			}
 
