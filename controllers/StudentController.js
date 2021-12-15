@@ -29,11 +29,12 @@ class StudentController {
 
   update(req, res) {
     const { id } = req.params;
+    const { name } = req.body;
     
-    students[id] = 'Jenglot';
+    students[id] = name;
 
     const response = {
-      message: `Mengedit student ${id}`,
+      message: `Mengedit student id ${id}, nama ${name}`,
       data: students,
     };
 
