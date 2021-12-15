@@ -15,13 +15,20 @@ const showDownload = (result) => {
 const download = () => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(showDownload('windows-10.exe'));
+      const result = 'windows-10.exe'
+      resolve(result);
     }, 3000);
   });
 
 };
 
-download();
+const main = async () => {
+  const downloadResult = await download();
+  showDownload(downloadResult);
+};
+
+main();
+
 
 
 /**
