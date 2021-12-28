@@ -1,10 +1,13 @@
 {
-  "name": "__kuliah__",
+  "name": "restful-api-express",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start-db": "nodemon config/database.js",
+    "watch": "ts-node src/app.ts",
+    "watch-hot": "nodemon",
+    "build": "tsc -p ."
   },
   "repository": {
     "type": "git",
@@ -18,9 +21,20 @@
   },
   "homepage": "https://github.com/sabiq7392/__kuliah__#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.5",
+    "@typescript-eslint/eslint-plugin": "^5.8.0",
+    "@typescript-eslint/parser": "^5.8.0",
+    "eslint": "^8.5.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.3",
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
   }
 }
