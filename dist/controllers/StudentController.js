@@ -26,69 +26,85 @@ class StudentController {
         });
     }
     static show(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const id = Number(req.params.id);
+            const student = yield Student_1.default.find(id);
+            return ResponseJson_1.default.success(res, {
+                status: 200,
+                message: `Success get student id: ${id}`,
+                data: student,
+            });
+        });
     }
     static store(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { name, nim, prodi } = req.body;
-            if (name && nim && prodi) {
-                const student = yield Student_1.default.create({ name, nim, prodi });
+            const { name, nim, email, prodi } = req.body;
+            if (name && nim && email && prodi) {
+                yield Student_1.default.create({ name, nim, email, prodi });
                 return ResponseJson_1.default.success(res, {
                     status: 201,
                     message: `Success to add student: ${name}`,
-                    data: student,
+                    data: { name, nim, email, prodi },
                 });
             }
             return ResponseJson_1.default.fail(res, {
                 status: 400,
-                message: 'Fail to add student, make sure the key must be name, nim, prodi',
+                message: 'Fail to add student, make sure the key must be name, nim, email, prodi',
             });
         });
     }
     static update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = Number(req.params.id);
-            const { name, nim, prodi } = req.body;
-            const student = yield Student_1.default.update(id, { name, nim, prodi });
-            const studentsLength = yield Student_1.default.getLength();
-            if (id < studentsLength) {
-                return ResponseJson_1.default.success(res, {
-                    status: 200,
-                    message: `Success to edit student: ${id}, name: ${name}`,
-                    data: student,
-                });
+            const { name, nim, prodi, email } = req.body;
+            const student = yield Student_1.default.update(id, { name, nim, prodi, email });
+            switch (student) {
+                case 1: {
+                    return ResponseJson_1.default.success(res, {
+                        status: 200,
+                        message: `Success to edit student: ${id}, name: ${name}`,
+                        data: { name, nim, email, prodi },
+                    });
+                }
+                case 0: {
+                    return ResponseJson_1.default.fail(res, {
+                        status: 404,
+                        message: 'Student cannot be found',
+                    });
+                }
+                default: {
+                    return ResponseJson_1.default.fail(res, {
+                        status: 500,
+                        message: 'Student fail to update',
+                    });
+                }
             }
-            if (id > studentsLength) {
-                return ResponseJson_1.default.fail(res, {
-                    status: 404,
-                    message: 'Student cannot be found',
-                });
-            }
-            return ResponseJson_1.default.fail(res, {
-                status: 500,
-                message: 'Student fail to update',
-            });
         });
     }
     static destroy(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = Number(req.params.id);
             const student = yield Student_1.default.delete(id);
-            if (student === 'data deleted') {
-                return ResponseJson_1.default.success(res, {
-                    status: 200,
-                    message: `Success to delete student: ${id}`,
-                });
+            switch (student) {
+                case 1: {
+                    return ResponseJson_1.default.success(res, {
+                        status: 200,
+                        message: `Success to delete student: ${id}`,
+                    });
+                }
+                case 0: {
+                    return ResponseJson_1.default.fail(res, {
+                        status: 404,
+                        message: `Student id: ${id} cannot be found`,
+                    });
+                }
+                default: {
+                    return ResponseJson_1.default.fail(res, {
+                        status: 500,
+                        message: 'Student fail to update',
+                    });
+                }
             }
-            if (student === 'data not found') {
-                return ResponseJson_1.default.fail(res, {
-                    status: 404,
-                    message: `Student id: ${id} cannot be found`,
-                });
-            }
-            return ResponseJson_1.default.fail(res, {
-                status: 500,
-                message: 'Student fail to update',
-            });
         });
     }
 }

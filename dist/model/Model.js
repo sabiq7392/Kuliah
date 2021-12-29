@@ -7,8 +7,25 @@ const database_1 = __importDefault(require("../config/database"));
 class Model {
     static all() {
         return new Promise((resolve, reject) => {
-            const sql = `SELECT * FROM ${this.table}`;
-            database_1.default.query(sql, (err, results) => (err ? reject(err) : resolve(results)));
+            const sql = `SELECT * FROMz${this.table}`;
+            database_1.default.query(sql, (err, results) => {
+                if (err)
+                    reject(err);
+                if (results.length === 0) {
+                    resolve('there is no data found');
+                }
+                resolve(results);
+            });
+        });
+    }
+    static find(id) {
+        return new Promise((resolve, reject) => {
+            const sql = `SELECT * FROM ${this.table} WHERE id = ${id}`;
+            database_1.default.query(sql, (err, result) => {
+                if (err)
+                    reject(err);
+                resolve(result);
+            });
         });
     }
     static create(data) {
@@ -26,10 +43,10 @@ class Model {
             for (const [key, value] of dataInfo) {
                 const student = [value, id];
                 const sql = `UPDATE ${this.table} SET ${key} = ? WHERE id = ?`;
-                database_1.default.query(sql, student, (err, results) => {
+                database_1.default.query(sql, student, (err, result) => {
                     if (err)
                         reject(err);
-                    resolve(results);
+                    resolve(result.affectedRows);
                 });
             }
         });
@@ -38,12 +55,7 @@ class Model {
         return new Promise((resolve, reject) => {
             const sql = `DELETE FROM ${this.table} WHERE id = ?`;
             database_1.default.query(sql, id, (err, result) => {
-                if (err)
-                    reject(err);
-                if (result.affectedRows === 0)
-                    resolve('data not found');
-                if (result.affectedRows === 1)
-                    resolve('data deleted');
+                return err ? reject(err) : resolve(result.affectedRows);
             });
         });
     }
