@@ -17,15 +17,21 @@
 	],
 	"ignorePatterns": "./dist/*.js",
 	"rules": {
-		"prefer-const": "off",
+		"arrow-body-style": "off",
 		"class-methods-use-this": "off",
+		"consistent-return": "warn",
 		"import/extensions": "off",
 		"import/no-unresolved": "off",
 		"import/no-mutable-exports": "off",
+		"lines-between-class-members": "warn",
 		"max-classes-per-file": "off",
 		"no-empty": "warn",
+		"no-restricted-syntax": "off",
 		"no-trailing-spaces": "warn",
 		"no-underscore-dangle": "off",
-		"no-unused-vars": "warn"
+		"no-unused-vars": "warn",
+		"no-useless-return": "off",
+		"no-console": "off",
+		"quotes": "warn"
 	}
 }

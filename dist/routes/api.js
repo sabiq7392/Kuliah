@@ -13,5 +13,6 @@ router.route('/students')
     .post(StudentController_1.default.store);
 router.route('/students/:id')
     .put(StudentController_1.default.update)
-    .delete(StudentController_1.default.destroy);
+    .delete(StudentController_1.default.destroy)
+    .get(StudentController_1.default.show);
 exports.default = router;

@@ -1,75 +1,94 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const students_1 = __importDefault(require("../data/students"));
 const ResponseJson_1 = __importDefault(require("../utils/ResponseJson"));
-const Validate_1 = __importDefault(require("../utils/Validate"));
+const Student_1 = __importDefault(require("../model/Student"));
 class StudentController {
     static index(req, res) {
-        return ResponseJson_1.default.success(res, {
-            status: 200,
-            message: 'Show all students',
-            data: students_1.default,
+        return __awaiter(this, void 0, void 0, function* () {
+            const students = yield Student_1.default.all();
+            return ResponseJson_1.default.success(res, {
+                status: 200,
+                message: 'Show all students',
+                data: students,
+            });
         });
     }
+    static show(req, res) {
+    }
     static store(req, res) {
-        const { name } = req.body;
-        if (Validate_1.default.string(name)) {
-            students_1.default.push(name);
-            return ResponseJson_1.default.success(res, {
-                status: 201,
-                message: `Success to add student: ${name}`,
-                data: students_1.default,
+        return __awaiter(this, void 0, void 0, function* () {
+            const { name, nim, prodi } = req.body;
+            if (name && nim && prodi) {
+                const student = yield Student_1.default.create({ name, nim, prodi });
+                return ResponseJson_1.default.success(res, {
+                    status: 201,
+                    message: `Success to add student: ${name}`,
+                    data: student,
+                });
+            }
+            return ResponseJson_1.default.fail(res, {
+                status: 400,
+                message: 'Fail to add student, make sure the key must be name, nim, prodi',
             });
-        }
-        return ResponseJson_1.default.fail(res, {
-            status: 400,
-            message: 'Fail to add student, make sure the key must be name',
         });
     }
     static update(req, res) {
-        const id = Number(req.params.id) - 1;
-        const { name } = req.body;
-        if (id < students_1.default.length) {
-            students_1.default[id] = name;
-            return ResponseJson_1.default.success(res, {
-                status: 200,
-                message: `Success to edit student: ${id}, name: ${name}`,
-                data: students_1.default,
-            });
-        }
-        if (id > students_1.default.length) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const id = Number(req.params.id);
+            const { name, nim, prodi } = req.body;
+            const student = yield Student_1.default.update(id, { name, nim, prodi });
+            const studentsLength = yield Student_1.default.getLength();
+            if (id < studentsLength) {
+                return ResponseJson_1.default.success(res, {
+                    status: 200,
+                    message: `Success to edit student: ${id}, name: ${name}`,
+                    data: student,
+                });
+            }
+            if (id > studentsLength) {
+                return ResponseJson_1.default.fail(res, {
+                    status: 404,
+                    message: 'Student cannot be found',
+                });
+            }
             return ResponseJson_1.default.fail(res, {
-                status: 404,
-                message: 'Student cannot be found',
+                status: 500,
+                message: 'Student fail to update',
             });
-        }
-        return ResponseJson_1.default.fail(res, {
-            status: 500,
-            message: 'Student fail to update',
         });
     }
     static destroy(req, res) {
-        const id = parseInt(req.params.id, 10) - 1;
-        if (id < students_1.default.length) {
-            students_1.default.splice(id, 1);
-            return ResponseJson_1.default.success(res, {
-                status: 200,
-                message: `Success to delete student: ${id}`,
-                data: students_1.default,
-            });
-        }
-        if (id > students_1.default.length) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const id = Number(req.params.id);
+            const student = yield Student_1.default.delete(id);
+            if (student === 'data deleted') {
+                return ResponseJson_1.default.success(res, {
+                    status: 200,
+                    message: `Success to delete student: ${id}`,
+                });
+            }
+            if (student === 'data not found') {
+                return ResponseJson_1.default.fail(res, {
+                    status: 404,
+                    message: `Student id: ${id} cannot be found`,
+                });
+            }
             return ResponseJson_1.default.fail(res, {
-                status: 404,
-                message: `Student cannot be found: ${id}`,
+                status: 500,
+                message: 'Student fail to update',
             });
-        }
-        return ResponseJson_1.default.fail(res, {
-            status: 500,
-            message: 'Student fail to update',
         });
     }
 }

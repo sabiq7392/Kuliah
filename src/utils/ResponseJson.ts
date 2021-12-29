@@ -3,7 +3,7 @@ import { Response } from 'express';
 interface DataJson {
   status: number,
   message: string,
-  data?: Array<string>,
+  data?: any,
 }
 
 export default class ResponseJson {

@@ -12,6 +12,7 @@ router.route('/students')
 
 router.route('/students/:id')
   .put(StudentController.update)
-  .delete(StudentController.destroy);
+  .delete(StudentController.destroy)
+  .get(StudentController.show);
 
 export default router;

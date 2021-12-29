@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import students from '../data/students';
 import ResponseJson from '../utils/ResponseJson';
-import Validate from '../utils/Validate';
+import Student from '../model/Student';
 
 export default class StudentController {
-  public static index(req: Request, res: Response) {
+  public static async index(req: Request, res: Response) {
+    const students = await Student.all();
     return ResponseJson.success(res, {
       status: 200,
       message: 'Show all students',
@@ -12,39 +12,42 @@ export default class StudentController {
     });
   }
 
-  public static store(req: Request, res: Response) {
-    const { name } = req.body;
-    if (Validate.string(name)) {
-      students.push(name);
+  public static show(req: Request, res: Response) {
+    
+  }
 
+  public static async store(req: Request, res: Response) {
+    const { name, nim, prodi } = req.body;
+    if (name && nim && prodi) {
+      const student = await Student.create({ name, nim, prodi });
       return ResponseJson.success(res, {
         status: 201,
         message: `Success to add student: ${name}`,
-        data: students,
+        data: student,
       });
     }
 
     return ResponseJson.fail(res, {
       status: 400,
-      message: 'Fail to add student, make sure the key must be name',
+      message: 'Fail to add student, make sure the key must be name, nim, prodi',
     });
   }
 
-  public static update(req: Request, res: Response) {
-    const id = Number(req.params.id) - 1;
-    const { name } = req.body;
+  public static async update(req: Request, res: Response) {
+    const id = Number(req.params.id);
+    const { name, nim, prodi } = req.body;
+    const student = await Student.update(id, { name, nim, prodi });
+    const studentsLength = await Student.getLength();
 
-    if (id < students.length) {
-      students[id] = name;
-
+    if (id < studentsLength) {
       return ResponseJson.success(res, {
         status: 200,
         message: `Success to edit student: ${id}, name: ${name}`,
-        data: students,
+        data: student,
       });
     }
 
-    if (id > students.length) {
+    if (id > studentsLength) {
       return ResponseJson.fail(res, {
         status: 404,
         message: 'Student cannot be found',
@@ -57,23 +60,21 @@ export default class StudentController {
     });
   }
 
-  public static destroy(req: Request, res: Response) {
-    const id = parseInt(req.params.id, 10) - 1;
+  public static async destroy(req: Request, res: Response) {
+    const id = Number(req.params.id);
+    const student = await Student.delete(id);
 
-    if (id < students.length) {
-      students.splice(id, 1);
-
+    if (student === 'data deleted') {
       return ResponseJson.success(res, {
         status: 200,
         message: `Success to delete student: ${id}`,
-        data: students,
       });
     }
 
-    if (id > students.length) {
+    if (student === 'data not found') {
       return ResponseJson.fail(res, {
         status: 404,
-        message: `Student cannot be found: ${id}`,
+        message: `Student id: ${id} cannot be found`,
       });
     }
 

@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start-db": "nodemon config/database.js",
     "watch": "ts-node src/app.ts",
     "watch-hot": "nodemon",
     "build": "tsc -p ."
@@ -21,6 +20,7 @@
   },
   "homepage": "https://github.com/sabiq7392/__kuliah__#readme",
   "dependencies": {
+    "@types/mysql": "^2.15.20",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "mysql": "^2.18.1"

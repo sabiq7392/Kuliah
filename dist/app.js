@@ -8,6 +8,6 @@ const api_1 = __importDefault(require("./routes/api"));
 require('dotenv').config();
 const { BASE_URL, APP_PORT } = process.env;
 const app = (0, express_1.default)();
-app.listen(APP_PORT, () => console.log(`Server running in ${BASE_URL}:${APP_PORT}`));
+app.listen(APP_PORT || 3000, () => console.log(`Server running in ${BASE_URL}:${APP_PORT}`));
 app.use(express_1.default.json());
 app.use(api_1.default);
