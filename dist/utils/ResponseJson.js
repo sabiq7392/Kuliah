@@ -8,10 +8,10 @@ class ResponseJson {
             .json({ status, message, data });
     }
     static fail(res, dataJson) {
-        const { status, message } = dataJson;
+        const { status, message, data } = dataJson;
         res
             .status(status)
-            .json({ status, message });
+            .json({ status, message, data });
     }
 }
 exports.default = ResponseJson;

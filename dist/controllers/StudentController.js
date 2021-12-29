@@ -18,6 +18,12 @@ class StudentController {
     static index(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const students = yield Student_1.default.all();
+            if (students === 0) {
+                return ResponseJson_1.default.fail(res, {
+                    status: 404,
+                    message: 'Student not found',
+                });
+            }
             return ResponseJson_1.default.success(res, {
                 status: 200,
                 message: 'Show all students',
@@ -29,9 +35,15 @@ class StudentController {
         return __awaiter(this, void 0, void 0, function* () {
             const id = Number(req.params.id);
             const student = yield Student_1.default.find(id);
+            if (student === 1) {
+                return ResponseJson_1.default.fail(res, {
+                    status: 404,
+                    message: `Student not found. ID: ${id}`,
+                });
+            }
             return ResponseJson_1.default.success(res, {
                 status: 200,
-                message: `Success get student id: ${id}`,
+                message: `Success get student. ID: ${id}`,
                 data: student,
             });
         });
@@ -43,7 +55,7 @@ class StudentController {
                 yield Student_1.default.create({ name, nim, email, prodi });
                 return ResponseJson_1.default.success(res, {
                     status: 201,
-                    message: `Success to add student: ${name}`,
+                    message: `Success to add student. name: ${name}`,
                     data: { name, nim, email, prodi },
                 });
             }
@@ -62,14 +74,14 @@ class StudentController {
                 case 1: {
                     return ResponseJson_1.default.success(res, {
                         status: 200,
-                        message: `Success to edit student: ${id}, name: ${name}`,
+                        message: `Success to edit student. ID: ${id}, name: ${name}`,
                         data: { name, nim, email, prodi },
                     });
                 }
                 case 0: {
                     return ResponseJson_1.default.fail(res, {
                         status: 404,
-                        message: 'Student cannot be found',
+                        message: `Student cannot be found. ID: ${id}`,
                     });
                 }
                 default: {
@@ -89,13 +101,13 @@ class StudentController {
                 case 1: {
                     return ResponseJson_1.default.success(res, {
                         status: 200,
-                        message: `Success to delete student: ${id}`,
+                        message: `Success to delete student. ID: ${id}`,
                     });
                 }
                 case 0: {
                     return ResponseJson_1.default.fail(res, {
                         status: 404,
-                        message: `Student id: ${id} cannot be found`,
+                        message: `Student cannot be found. ID: ${id}`,
                     });
                 }
                 default: {
